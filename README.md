@@ -16,4 +16,5 @@
 2) php artisan make:migration
 3) composer dump-autoload
 4) php artisan db:seed
-4) php artisan passport:install
+5) php artisan passport:install
+6) php artisan serve
