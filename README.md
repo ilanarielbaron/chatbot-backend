@@ -1,6 +1,6 @@
-#Chatbot APIs
+# Chatbot APIs
 
-#URIs
+## URIs
   POST     | api/login
   
   POST     | api/register 
@@ -11,7 +11,7 @@
   
   POST     | api/users/{user}/transactions
 
-#Steps
+## Steps
 1) composer install
 2) php artisan make:migration
 3) composer dump-autoload
