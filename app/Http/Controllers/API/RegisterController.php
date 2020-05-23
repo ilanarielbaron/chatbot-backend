@@ -24,13 +24,18 @@ class RegisterController extends BaseController
             'password' => 'required'
         ]);
 
-        if($request->has("defaultCurrency")){
-            if($request->get("defaultCurrency") != "" && !validateCurrency($request->get("defaultCurrency")))
+        if ($validator->fails()) {
+            return $this->sendError('Validation Error.', $validator->errors());
+        }
+
+        if ($request->has("defaultCurrency")) {
+            if ($request->get("defaultCurrency") != "" && !validateCurrency($request->get("defaultCurrency")))
                 return $this->sendError('currencyError.', ['error' => 'Currency not found']);
         }
 
-        if ($validator->fails()) {
-            return $this->sendError('Validation Error.', $validator->errors());
+        $count = User::where('user', $request->get('user'))->count();
+        if($count > 0) {
+            return $this->sendError('existUser.', ['error' => 'User exist']);
         }
 
         $input = $request->all();
@@ -88,9 +93,8 @@ class RegisterController extends BaseController
             return $this->sendError('currencyError.', ['error' => 'Currency is missing']);
         }
 
-        if($request->get("defaultCurrency") != "" && !validateCurrency($request->get("defaultCurrency")))
+        if ($request->get("defaultCurrency") != "" && !validateCurrency($request->get("defaultCurrency")))
             return $this->sendError('currencyError.', ['error' => 'Currency not found']);
-
 
         $username = $request->input('user');
         $defaultCurrency = $request->input('defaultCurrency');
@@ -114,7 +118,7 @@ class RegisterController extends BaseController
             return $this->sendResponse($user, 'Currency added.');
         } else {
             // Return 304 not updated
-            return $this->sendError('Unauthorised.', ['error' => 'Error'],304);
+            return $this->sendError('Unauthorised.', ['error' => 'Error'], 304);
         }
     }
 }
