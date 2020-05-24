@@ -88,24 +88,13 @@ class RegisterController extends BaseController
             return $this->sendError('Unauthorised.', ['error' => 'No user found with this ID']);
         }
 
-        if (!$request->has("defaultCurrency")) {
-            // Return error 404.
-            return $this->sendError('currencyError.', ['error' => 'Currency is missing']);
-        }
-
         if ($request->get("defaultCurrency") != "" && !validateCurrency($request->get("defaultCurrency")))
             return $this->sendError('currencyError.', ['error' => 'Currency not found']);
 
-        $username = $request->input('user');
         $defaultCurrency = $request->input('defaultCurrency');
 
         // Check PATCH data
         $flag = false;
-
-        if ($username != null && $username != '') {
-            $user->user = $username;
-            $flag = true;
-        }
 
         if ($defaultCurrency != null && $defaultCurrency != '') {
             $user->defaultCurrency = $defaultCurrency;
